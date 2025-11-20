@@ -4,12 +4,29 @@ VALUES
 ('Raoul', 'Barz', 'raoul@example.com', 'hash123', '2025-01-15'),
 ('Alicia', 'Stone', 'alicia@example.com', 'hash456', '2025-01-20');
 
+
+
 -- Insert accounts for the users
 INSERT INTO Account (userID, accountType, balance, createdAt)
 VALUES
 (1, 'checking', 2500.00, '2025-01-15'),
 (1, 'savings', 6000.00, '2025-01-15'),
 (2, 'checking', 1200.00, '2025-01-20');
+
+-- Insert goals and budgets for users
+INSERT INTO Goal (userID, goalName, targetAmount, deadline)
+SELECT DISTINCT userID,
+       CONCAT('Goal for User ', userID),
+       5000.00,
+       '2025-12-31'
+FROM Account
+WHERE accountType = 'savings';
+
+-- Insert budgets for users created after a certain date
+INSERT INTO Budget (userID, category, monthlyLimit)
+SELECT userID, 'General', 500.00
+FROM User
+WHERE createdAt >= '2025-02-10';
 
 -- Insert transactions for accounts
 INSERT INTO `Transaction` (accountID, amount, tType, tDate)
@@ -37,3 +54,16 @@ VALUES
 INSERT INTO Investment (userID, investmentType, value, riskLevel)
 VALUES
 (2, 'Index Fund', 3200.00, 'medium');
+
+
+
+
+SELECT * FROM User;
+SELECT * FROM Account;
+SELECT * FROM `Transaction`;
+SELECT * FROM Goal;
+SELECT * FROM TransactionGoal;
+SELECT * FROM Budget;
+SELECT * FROM Investment;
+
+
